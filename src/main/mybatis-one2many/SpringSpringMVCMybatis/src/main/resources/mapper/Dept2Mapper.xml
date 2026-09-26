@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chapter05.Dept2Mapper">
+    <resultMap id="Dept2ResultMap" type="com.chapter05.Dept2">
+        <id column="did" property="did"/>
+        <result column="dname" property="dname"/>
+        <collection property="empList" ofType="com.chapter05.Emp2">
+            <id column="eid" property="eid"/>
+            <result column="ename" property="ename"/>
+            <result column="did" property="did"/>
+        </collection>
+    </resultMap>
+
+    <select id="findDeptById" resultMap="Dept2ResultMap">
+        SELECT d.did, d.dname, e.eid, e.ename, e.did
+        FROM dept2 d
+                 LEFT JOIN emp2 e ON d.did = e.did
+        WHERE d.did = #{did}
+    </select>
+</mapper>

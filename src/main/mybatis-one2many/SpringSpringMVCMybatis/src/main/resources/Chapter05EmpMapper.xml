@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 绑定Emp的Mapper接口 -->
+<mapper namespace="com.chapter05.Chapter05EmpMapper">
+
+    <!-- 多对一：员工查部门，xml嵌套结果方式 -->
+    <select id="many2oneByXml" resultType="Emp">
+        select e.*,d.*
+        from emp e
+                 left join dept d on e.deptno = d.deptno
+        where e.empno = #{empno}
+    </select>
+
+    <!-- 一对一 xml嵌套结果 -->
+    <select id="one2oneByXml" resultType="Emp">
+        select * from emp where empno=#{empno}
+    </select>
+
+    <!-- 多对多 xml嵌套结果，员工关联技能 -->
+    <select id="many2manyByXml" resultType="Emp">
+        select e.*,s.*
+        from emp e
+                 left join emp_skill es on e.empno = es.empno
+                 left join skill s on es.skill_id = s.skill_id
+        where e.empno=#{empno}
+    </select>
+
+</mapper>
