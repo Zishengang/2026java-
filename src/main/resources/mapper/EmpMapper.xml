@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.EmpMapper">
+
+    <resultMap id="EmpSkillMap" type="com.test.Emp">
+        <id column="empno" property="empno"/>
+        <result column="ename" property="ename"/>
+        <result column="job" property="job"/>
+        <result column="deptno" property="deptno"/>
+        <!--多对多：一个员工对应多个skill-->
+        <collection property="skillList" ofType="com.test.Skill">
+            <id column="skill_id" property="skillId"/>
+            <result column="skill_name" property="skillName"/>
+        </collection>
+    </resultMap>
+
+    <select id="findEmpWithSkill" resultMap="EmpSkillMap">
+        SELECT e.*, s.skill_id, s.skill_name
+        FROM emp e
+                 LEFT JOIN emp_skill es ON e.empno = es.empno
+                 LEFT JOIN skill s ON es.skill_id = s.skill_id
+        WHERE e.empno = #{empno}
+    </select>
+
+    <select id="findEmpById" resultType="com.test.Emp">
+        select * from emp where empno = #{empno}
+    </select>
+</mapper>
